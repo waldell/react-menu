@@ -1,26 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import MenuComposition from './MenuComposition';
 
-function App() {
+var data = [
+  {text:'One 1', children: [
+    {text:'One 1-1', children: [
+      {text:'One 1-1-1'},
+      {text:'One 1-1-2'},
+      {text:'One 1-1-3'},
+      {text:'One 1-1-4'}
+    ]},
+    {text:'One 1-2'},
+    {text:'One 1-3'}
+  ]},
+  {text:'One 2', children: [
+    {text:'One 2-1'},
+    {text:'One 2-2'},
+    {text:'One 2-3'}
+  ]}
+];
+
+export default function App(props) {
+  function onNavigation(e) {
+    console.log('navigation occured in app')
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MenuComposition data={data} onNavigation={onNavigation}/>
     </div>
   );
+  
 }
-
-export default App;
