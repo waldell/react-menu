@@ -1,0 +1,40 @@
+a {
+    color:inherit;
+}
+.menu {
+    &__sub-menu {
+        &--level- {
+            &1 {
+                color:#000;
+            }
+            &2 {
+                color:#444;
+            }
+            &3 {
+                color:#888;
+            }
+            &4 {
+                color:#ccc;
+            }
+        }
+    }
+
+    &__menu-item {
+        font-weight: 400;
+        
+        & > .menu__sub-menu {
+            display: none;
+        }
+
+        &--selected {
+            font-weight: 700;
+
+            & > .menu__sub-menu {
+                display: block;
+            }
+        }
+    }
+}
+
+
+

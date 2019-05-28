@@ -1,48 +1,25 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import MenuComposition from './MenuComposition';
 
-
-var data = [
-	{
-		text: 'One 1', url: '1', children: [
-			{
-				text: 'One 1-1', url: '11', children: [
-					{ text: 'One 1-1-1', url: '111' },
-					{ text: 'One 1-1-2', url: '112' },
-					{
-						text: 'One 1-1-3', url: '113', children: [
-							{ text: 'One 1-1-3-1', url: '1131' },
-							{ text: 'One 1-1-3-2', url: '1132' },
-							{ text: 'One 1-1-3-3', url: '1133' },
-							{ text: 'One 1-1-3-4', url: '1134' }
-						]
-					},
-					{ text: 'One 1-1-4', url: '114' }
-				]
-			},
-			{ text: 'One 1-2', url: '12' },
-			{ text: 'One 1-3', url: '13' }
-		]
-	},
-	{
-		text: 'One 2', url: '2', children: [
-			{ text: 'One 2-1', url: '21' },
-			{ text: 'One 2-2', url: '22' },
-			{ text: 'One 2-3', url: '23' }
-		]
-	}
-];
-
 export default class App extends React.Component {
-	constructor(props, state) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
-			selectedPath: []
+			selectedPath: [],
+			data: []
 		}
 
 		this.onNavigation = this.onNavigation.bind(this);
+	}
+
+	componentDidMount() {
+		fetch('menu-data.json')
+			.then(x => x.json())
+			.then(x => {
+				this.setState({data: x}); // BOKA MÖTE
+			})
 	}
 
 	_getTrail(url) {
@@ -64,19 +41,23 @@ export default class App extends React.Component {
 				}
 			}
 		}
-		findObj(data, index);
+		findObj(this.state.data, index);
 		trail = trail.slice(0, index);
 		return trail;
 	}
 
-	onNavigation(e, url) {
+	onNavigation(e, obj) {
+		var trail = this._getTrail(obj.url);
+		if (!obj.selected) {
+			trail = trail.slice(0,trail.length-1);
+		}
 		this.setState({
-			selectedPath: this._getTrail(url)
+			selectedPath: trail
 		});
 	}
 	render() {
 		return (<div className="App">
-			<MenuComposition data={data} selectedPath={this.state.selectedPath} onNavigation={this.onNavigation} />
+			<MenuComposition data={this.state.data} selectedPath={this.state.selectedPath} onNavigation={this.onNavigation} />
 		</div>);
 	}
 }
