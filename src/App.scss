@@ -2,6 +2,22 @@ a {
     color:inherit;
 }
 .menu {
+	&__menu-item {
+        font-weight: 400;
+        
+        & > .menu__sub-menu {
+            display: none;
+        }
+
+        &--selected {
+            font-weight: 700;
+
+            & > .menu__sub-menu {
+                display: block;
+            }
+        }
+	}
+	
     &__sub-menu {
         &--level- {
             &1 {
@@ -17,22 +33,24 @@ a {
                 color:#ccc;
             }
         }
-    }
+	}
+}
 
-    &__menu-item {
-        font-weight: 400;
-        
-        & > .menu__sub-menu {
-            display: none;
-        }
 
-        &--selected {
-            font-weight: 700;
 
-            & > .menu__sub-menu {
-                display: block;
-            }
-        }
+
+.heightr {
+    background:peru;
+	width: 640px;
+
+	display: flex;
+	flex-direction: row;
+	
+
+    .heightr-element {
+		flex: 1;
+		background:hotpink;
+		margin:10px;
     }
 }
 

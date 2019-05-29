@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.scss';
 import MenuComposition from './MenuComposition';
+import Heightr from './Heightr';
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -56,8 +57,10 @@ export default class App extends React.Component {
 		});
 	}
 	render() {
-		return (<div className="App">
+		return (
+		<div className="App">
 			<MenuComposition data={this.state.data} selectedPath={this.state.selectedPath} onNavigation={this.onNavigation} />
+			<Heightr></Heightr>
 		</div>);
 	}
 }
