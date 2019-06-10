@@ -33,46 +33,51 @@ $current-text-color: #000;
 	border-radius: 0;
 	font-family: 'Courier New', Courier, monospace;
 	font-family: 'Roboto', sans-serif;
-
 	font-size: 14px;
+
+	&:focus {
+		outline-style: solid;
+		outline-color: red;
+	}
+}
+
+@mixin button {
+	@include menu-item-stuff;
+
+	position: relative;
+
+	&:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top:14px;
+		right:15px;
+
+		border-color: #000;
+		border-left: 1px solid;
+		border-bottom: 1px solid;
+
+		height: 6px;
+		width: 6px;
+
+		transform: rotate(-45deg);
+		transition: .2s;
+	}
 }
 
 // //mobile down
-//@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 767px) {
 	.menu {
 		
 		padding-inline-start: 0px;
 		width:280px;
 		
 		& > .menu__menu-item {
-			& > a,
-			& > button {
+			& > a {
 				@include menu-item-stuff;
-				&:focus {
-					outline-style: solid;
-  					outline-color: red;
-				}
 			}
-
 			& > button {
-				position: relative;
-				&:after {
-					content: '';
-					display: block;
-					position: absolute;
-					top:14px;
-					right:15px;
-
-					border-color: #000;
-					border-left: 1px solid;
-					border-bottom: 1px solid;
-
-					height: 6px;
-					width: 6px;
-
-					transform: rotate(-45deg);
-					transition: .2s;
-				}
+				@include button;
 			}
 
 			&.menu__menu-item--selected {
@@ -103,9 +108,9 @@ $current-text-color: #000;
 
 		&.menu--level-1 {
 			display: block;
-			background: $level-1-background-color;
 
 			& > .menu__menu-item {
+				background: $level-1-background-color;
 				&:not(:first-child) {
 					border-top:1px solid #ddd;
 				}
@@ -118,8 +123,8 @@ $current-text-color: #000;
 		}
 		&.menu--level-2 {
 			display: none;
-			background: $level-2-background-color;
 			& > .menu__menu-item {
+				background: $level-2-background-color;
 				border-top:1px solid #ccc;
 
 				& > a, 
@@ -132,8 +137,8 @@ $current-text-color: #000;
 		}
 		&.menu--level-3 {
 			display: none;
-			background: $level-3-background-color;
 			& > .menu__menu-item {
+				background: $level-3-background-color;
 				border-top:1px solid #ddd;
 				& > a, 
 				& > button {
@@ -144,8 +149,8 @@ $current-text-color: #000;
 		}
 		&.menu--level-4 {
 			display: none;
-			background: $level-4-background-color;
 			& > .menu__menu-item {
+				background: $level-4-background-color;
 				border-top:1px solid #b3b3b3; // is this right???
 				& > a, 
 				& > button {
@@ -161,139 +166,187 @@ $current-text-color: #000;
 		}
 		
 	}
-// }
+}
 
 
-// // desktop
-// @media only screen and (min-width: 768px) {
-// 	$itemWidth: 280px;
-// 	$firstItemHeight:40px;
+// desktop
+@media only screen and (min-width: 768px) {
+	$itemWidth: 280px;
+	$firstItemHeight:40px;
 
-// 	a {
-// 		color:inherit;
-// 	}
-// 	.top-menu {
-// 		position: relative;
-// 	}
+	a {
+		color:inherit;
+	}
+	.top-menu {
+		position: relative;
+	}
 
-// 	.menu {
-// 		padding-inline-start: 0px;
-// 		position: relative;
+	.menu {
+		padding-inline-start: 0px;
+		position: relative;
 
-// 		.menu__menu-item {
-// 			display: none;
+		.menu__menu-item {
+			display: none;
 
-// 			& > .menu__wrapper-item {
-// 				display: none;
-// 				position: absolute;
-// 				left: 0;
-// 				top: $firstItemHeight;
-// 				background: chartreuse;
-// 				width: $itemWidth*2 !important;
-// 				flex-direction: row !important;
+			& > .menu__wrapper-item {
+				display: none;
+				position: absolute;
+				left: 0;
+				top: $firstItemHeight;
+				width: $itemWidth*2 !important;
+				flex-direction: row !important;
 
-// 				& > .menu__commercial-area {
-// 					display: none;
-// 				}
-// 			}
+				& > .menu__commercial-area {
+					display: none;
+				}
+			}
 
-// 			&.menu__menu-item--selected {
-// 				& > .menu > .menu__menu-item {
-// 					display: block;
-// 				}
+			&.menu__menu-item--selected {
+				background: $selected-background-color !important;
 
-// 				& > .menu__wrapper-item {
-// 					display: flex !important;
-					
-
-// 					& > .menu,
-// 					& > .menu__commercial-area {
-// 						display: block;
-// 						flex: 1;
-// 					}
-
-// 					& > .menu__commercial-area {
-// 						background:black;
-// 						//min-height: 200px;
-// 					}
-// 					& > .menu > .menu__menu-item {
-// 						display: block;
-// 					}
-// 				}
-// 			}
-// 		}
-
-// 		&.menu--level-1 {
-// 			background:darksalmon;
-
-// 			& > .menu__menu-item {
-// 				display:inline-block;
-// 			}
-// 		}
-// 		&.menu--level-2 {
-// 			background:hotpink;
-
-// 			.menu__menu-item {
-// 				display: none;
-		
-// 				& > .menu__wrapper-item {
-// 					left: $itemWidth;
-// 					top:0;
-// 				}
-
-// 				&.menu__menu-item--selected {
-// 					& > .menu {
-// 						bottom:0;
-// 					}
-// 				}
-// 			}
-// 		}
-// 		&.menu--level-3 {
-// 			background: blue;
-
-// 			position: absolute;
-// 			left: $itemWidth;
-// 			top: 0;
-// 			//bottom: 0;
-// 			width: $itemWidth;
-
-// 			&:before {
-// 				content:'';
-// 				display: block;
-// 				left:-($itemWidth);
-// 				width: $itemWidth;
-// 				top:0;
-// 				bottom:0;
-// 				position: absolute;
-// 				z-index: -1;
+				& > a, 
+				& > button {
+					color: $selected-text-color !important;
+				}
+				& > button {
+					&:after {
+						top: 19px;
+						transform:rotate(-225deg);
+					}
+				}
 				
-// 				background: peachpuff;
-// 			}
+				& > .menu__wrapper-item > .menu,
+				& > .menu {
+					display: block;
+				}
 
-// 			.menu__menu-item {
-// 				display: none;
-		
-// 				& > .menu__wrapper-item {
-// 					position: unset;
-// 				}
-// 			}
+				& > .menu > .menu__menu-item {
+					display: block;
+				}
+
+				& > .menu__wrapper-item {
+					display: flex !important;
+
+					& > .menu,
+					& > .menu__commercial-area {
+						display: block;
+						flex: 1;
+					}
+
+					& > .menu__commercial-area {
+						background:lightblue;
+					}
+					& > .menu > .menu__menu-item {
+						display: block;
+					}
+				}
+			}
+
+			&.menu__menu-item--current {
+				background: $current-background-color !important;
+				& > a, 
+				& > button {
+					color: $current-text-color !important;
+				}
+			}
+		}
+
+		&.menu--level-1 {
+			& > .menu__menu-item {
+				background: $level-1-background-color;
+				display:inline-block;
+			}
+		}
+		&.menu--level-2 {
+			& > .menu__menu-item {
+				display: none;
+				background: $level-2-background-color;
+				
+				& > button {
+					&:after {
+						transform: rotate(225deg);
+						top:17px;
+					}
+				}
+
+				& > .menu__wrapper-item {
+					left: $itemWidth;
+					top:0;
+				}
+
+				&.menu__menu-item--selected {
+					& > .menu {
+						bottom:0;
+					}
+				}
+			}
+		}
+		&.menu--level-3 {
+			position: absolute;
+			left: $itemWidth;
+			top: 0;
+			width: $itemWidth;
+
+			.menu__menu-item {
+				background: $level-3-background-color;
+				display: none;
+				
+				&:before {
+					content:'';
+					display: block;
+					position: absolute;
+					left: -$itemWidth;
+					width: $itemWidth;
+					height: 41px;
+					z-index: -1;
+					background: peachpuff;
+				}
+
+				&.menu__menu-item--selected {
+					& > button {
+						&:after {
+							transform: rotate(-225deg);
+							top: 19px;
+						}
+					}
+
+					
+				} 
+
+				& > button {
+					&:after {
+						transform: rotate(-45deg);
+					}
+				}
+
+				& > .menu__wrapper-item {
+					position: unset;
+				}
+			}
 			
 			
-// 		}
-// 		&.menu--level-4 {
-// 			background: darkgreen;
-// 		}
-// 	}
+		}
+		&.menu--level-4 {
+			& > .menu__menu-item {
+				background: $level-4-background-color;
+				border-bottom:none;
+				border-top:1px solid #000;
+			}
+		}
+	}
 
-// 	.menu--level-2,
-// 	.menu--level-3,
-// 	.menu--level-4 {
-// 		& > .menu__menu-item {
-// 			border-bottom:1px solid #000;
-// 			a, button {
-// 				@include menu-item-stuff;
-// 			}
-// 		}
-// 	}
-// }
+	.menu--level-2,
+	.menu--level-3,
+	.menu--level-4 {
+		& > .menu__menu-item {
+			border-bottom:1px solid #000;
+			& > a {
+				@include menu-item-stuff;
+			}
+			& > button {
+				@include button;
+			}
+		}
+	}
+}
 
