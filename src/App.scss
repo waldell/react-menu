@@ -1,58 +1,299 @@
-a {
-    color:inherit;
+$level-1-background-color: #fff;
+$level-2-background-color: #fff;
+$level-3-background-color: #f5f5f5;
+$level-4-background-color: #ccc;
+$selected-background-color: #008266;
+$current-background-color: #cbe8df;
+
+$level-1-text-color: #000;
+$level-2-text-color: #000;
+$level-3-text-color: #000;
+$level-4-text-color: #000;
+$selected-text-color: #fff;
+$current-text-color: #000;
+
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+
+@mixin menu-item-stuff {
+	box-sizing: border-box;
+	outline: none;
+	display: block;
+	width: 100%;
+	padding: 9px 15px;
+	text-decoration: none;
+	margin: 0;
+	border: 0;
+	background: none;
+	font-weight: 400;
+	box-shadow: none;
+	text-align: left;
+	line-height: 22px;
+	cursor: pointer;
+	border-radius: 0;
+	font-family: 'Courier New', Courier, monospace;
+	font-family: 'Roboto', sans-serif;
+
+	font-size: 14px;
 }
-.menu {
-	&__menu-item {
-        font-weight: 400;
-        
-        & > .menu__sub-menu {
-            display: none;
-        }
 
-        &--selected {
-            font-weight: 700;
+// //mobile down
+//@media only screen and (max-width: 767px) {
+	.menu {
+		
+		padding-inline-start: 0px;
+		width:280px;
+		
+		& > .menu__menu-item {
+			& > a,
+			& > button {
+				@include menu-item-stuff;
+				&:focus {
+					outline-style: solid;
+  					outline-color: red;
+				}
+			}
 
-            & > .menu__sub-menu {
-                display: block;
-            }
-        }
-	}
+			& > button {
+				position: relative;
+				&:after {
+					content: '';
+					display: block;
+					position: absolute;
+					top:14px;
+					right:15px;
+
+					border-color: #000;
+					border-left: 1px solid;
+					border-bottom: 1px solid;
+
+					height: 6px;
+					width: 6px;
+
+					transform: rotate(-45deg);
+					transition: .2s;
+				}
+			}
+
+			&.menu__menu-item--selected {
+				background: $selected-background-color !important;
+				& > a, 
+				& > button {
+					color: $selected-text-color !important;
+				}
+				& > button {
+					&:after {
+						top: 19px;
+						transform:rotate(-225deg);
+					}
+				}
+				& > .menu__wrapper-item > .menu,
+				& > .menu {
+					display: block;
+				}
+			}
+			&.menu__menu-item--current {
+				background: $current-background-color !important;
+				& > a, 
+				& > button {
+					color: $current-text-color !important;
+				}
+			}
+		}
+
+		&.menu--level-1 {
+			display: block;
+			background: $level-1-background-color;
+
+			& > .menu__menu-item {
+				&:not(:first-child) {
+					border-top:1px solid #ddd;
+				}
+				& > a, 
+				& > button {
+					color: $level-1-text-color;
+					padding-left: 15px;
+				}
+			}
+		}
+		&.menu--level-2 {
+			display: none;
+			background: $level-2-background-color;
+			& > .menu__menu-item {
+				border-top:1px solid #ccc;
+
+				& > a, 
+				& > button {
+					color: $level-2-text-color;
+					padding-left: 25px;
+				}
+			}
+			
+		}
+		&.menu--level-3 {
+			display: none;
+			background: $level-3-background-color;
+			& > .menu__menu-item {
+				border-top:1px solid #ddd;
+				& > a, 
+				& > button {
+					color: $level-3-text-color;
+					padding-left: 35px;
+				}
+			}
+		}
+		&.menu--level-4 {
+			display: none;
+			background: $level-4-background-color;
+			& > .menu__menu-item {
+				border-top:1px solid #b3b3b3; // is this right???
+				& > a, 
+				& > button {
+					color: $level-4-text-color;
+					padding-left: 45px;
+				}
+			}
+		}
 	
-    &__sub-menu {
-        &--level- {
-            &1 {
-                color:#000;
-            }
-            &2 {
-                color:#444;
-            }
-            &3 {
-                color:#888;
-            }
-            &4 {
-                color:#ccc;
-            }
-        }
-	}
-}
-
-
-
-
-.heightr {
-    background:peru;
-	width: 640px;
-
-	display: flex;
-	flex-direction: row;
 	
+		.menu__commercial-area {
+			display: none;
+		}
+		
+	}
+// }
 
-    .heightr-element {
-		flex: 1;
-		background:hotpink;
-		margin:10px;
-    }
-}
 
+// // desktop
+// @media only screen and (min-width: 768px) {
+// 	$itemWidth: 280px;
+// 	$firstItemHeight:40px;
 
+// 	a {
+// 		color:inherit;
+// 	}
+// 	.top-menu {
+// 		position: relative;
+// 	}
+
+// 	.menu {
+// 		padding-inline-start: 0px;
+// 		position: relative;
+
+// 		.menu__menu-item {
+// 			display: none;
+
+// 			& > .menu__wrapper-item {
+// 				display: none;
+// 				position: absolute;
+// 				left: 0;
+// 				top: $firstItemHeight;
+// 				background: chartreuse;
+// 				width: $itemWidth*2 !important;
+// 				flex-direction: row !important;
+
+// 				& > .menu__commercial-area {
+// 					display: none;
+// 				}
+// 			}
+
+// 			&.menu__menu-item--selected {
+// 				& > .menu > .menu__menu-item {
+// 					display: block;
+// 				}
+
+// 				& > .menu__wrapper-item {
+// 					display: flex !important;
+					
+
+// 					& > .menu,
+// 					& > .menu__commercial-area {
+// 						display: block;
+// 						flex: 1;
+// 					}
+
+// 					& > .menu__commercial-area {
+// 						background:black;
+// 						//min-height: 200px;
+// 					}
+// 					& > .menu > .menu__menu-item {
+// 						display: block;
+// 					}
+// 				}
+// 			}
+// 		}
+
+// 		&.menu--level-1 {
+// 			background:darksalmon;
+
+// 			& > .menu__menu-item {
+// 				display:inline-block;
+// 			}
+// 		}
+// 		&.menu--level-2 {
+// 			background:hotpink;
+
+// 			.menu__menu-item {
+// 				display: none;
+		
+// 				& > .menu__wrapper-item {
+// 					left: $itemWidth;
+// 					top:0;
+// 				}
+
+// 				&.menu__menu-item--selected {
+// 					& > .menu {
+// 						bottom:0;
+// 					}
+// 				}
+// 			}
+// 		}
+// 		&.menu--level-3 {
+// 			background: blue;
+
+// 			position: absolute;
+// 			left: $itemWidth;
+// 			top: 0;
+// 			//bottom: 0;
+// 			width: $itemWidth;
+
+// 			&:before {
+// 				content:'';
+// 				display: block;
+// 				left:-($itemWidth);
+// 				width: $itemWidth;
+// 				top:0;
+// 				bottom:0;
+// 				position: absolute;
+// 				z-index: -1;
+				
+// 				background: peachpuff;
+// 			}
+
+// 			.menu__menu-item {
+// 				display: none;
+		
+// 				& > .menu__wrapper-item {
+// 					position: unset;
+// 				}
+// 			}
+			
+			
+// 		}
+// 		&.menu--level-4 {
+// 			background: darkgreen;
+// 		}
+// 	}
+
+// 	.menu--level-2,
+// 	.menu--level-3,
+// 	.menu--level-4 {
+// 		& > .menu__menu-item {
+// 			border-bottom:1px solid #000;
+// 			a, button {
+// 				@include menu-item-stuff;
+// 			}
+// 		}
+// 	}
+// }
 

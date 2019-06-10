@@ -19,11 +19,15 @@ export default class App extends React.Component {
 		fetch('menu-data.json')
 			.then(x => x.json())
 			.then(x => {
-				this.setState({data: x}); // BOKA MÖTE
-			})
+				this.setState({
+					data: x,
+					currentPath: this._getTrail('2234', x)
+				});
+			});
+		
 	}
 
-	_getTrail(url) {
+	_getTrail(url, data) {
 		var trail = [];
 		var index = 0;
 		function findObj(arr, idx) {
@@ -42,15 +46,15 @@ export default class App extends React.Component {
 				}
 			}
 		}
-		findObj(this.state.data, index);
+		findObj(data, index);
 		trail = trail.slice(0, index);
 		return trail;
 	}
 
 	onNavigation(e, obj) {
-		var trail = this._getTrail(obj.url);
+		var trail = this._getTrail(obj.url, this.state.data);
 		if (!obj.selected) {
-			trail = trail.slice(0,trail.length-1);
+			trail = trail.slice(0, trail.length-1);
 		}
 		this.setState({
 			selectedPath: trail
@@ -58,9 +62,9 @@ export default class App extends React.Component {
 	}
 	render() {
 		return (
-		<div className="App">
-			<MenuComposition data={this.state.data} selectedPath={this.state.selectedPath} onNavigation={this.onNavigation} />
-			<Heightr></Heightr>
-		</div>);
+			<div className="App">
+				<MenuComposition data={this.state.data} selectedPath={this.state.selectedPath} currentPath={this.state.currentPath} onNavigation={this.onNavigation} />
+			</div>
+		);
 	}
 }

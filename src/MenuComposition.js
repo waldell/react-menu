@@ -12,16 +12,17 @@ export default function MenuComposition(props) {
 	function bind(children, level) {
 		return children.map(item => {
 			const isSelected = props.selectedPath.indexOf(item.url) > -1;
+			const isCurrent = props.currentPath.indexOf(item.url) > -1;
 			return (
-				<MenuItem text={item.text} url={item.url} itemClick={itemClick} selected={isSelected} key={item.url} level={level}>
-					{item.children ? bind(item.children, level+1) : ''}
+				<MenuItem text={item.text} url={item.url} itemClick={itemClick} selected={isSelected} current={isCurrent} key={item.url} level={level}>
+					{ item.children ? bind(item.children, level+1) : '' }
 				</MenuItem>
 			);
 		});
 	}
 
 	return (
-		<Menu>
+		<Menu level={1} className="top-menu">
 			{props.data ? bind(props.data, 1) : ''}
 		</Menu>
 	);
@@ -30,5 +31,6 @@ export default function MenuComposition(props) {
 MenuItem.propTypes = {
 	data: PropTypes.object,
 	onNavigation: PropTypes.func,
-	selectedPath: PropTypes.arrayOf(PropTypes.string)
+	selectedPath: PropTypes.arrayOf(PropTypes.string),
+	currentPath: PropTypes.arrayOf(PropTypes.string)
 };
