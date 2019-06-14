@@ -11,6 +11,7 @@ export default class MenuItem extends React.Component {
 			rightAlign: false
 		};
 		this.itemClick = this.itemClick.bind(this);
+		this.linkClick = this.linkClick.bind(this);
 	}
 
 	get className() { 
@@ -26,6 +27,13 @@ export default class MenuItem extends React.Component {
 	}
 	get hasChildren() { return this.props.data.children ? true : false }
 
+	linkClick(e) {
+		if (this.props.navigate) {
+			this.props.navigate(e);
+		}
+		
+		this.itemClick(e);
+	}
 	itemClick(e) {
 		e.preventDefault();
 		this._markCurrentSelectedItem(e);
@@ -59,6 +67,7 @@ export default class MenuItem extends React.Component {
 			element = (
 				<div className={`menu__wrapper-item ${this.state.rightAlign ? 'menu__wrapper-item--right' : ''}`}>
 					<Menu 
+						navigate={this.props.navigate}
 						itemClick={this.props.itemClick}
 						selectedPath={this.props.selectedPath}
 						currentPath={this.props.currentPath}
@@ -94,7 +103,7 @@ export default class MenuItem extends React.Component {
 	renderLink() {
 		return (
 			<a 
-				onClick={this.itemClick} 
+				onClick={this.linkClick} 
 				href={this.props.data.url}
 				children={this.props.data.text} />
 		);

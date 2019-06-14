@@ -31,6 +31,8 @@ export default class Menu extends React.Component {
 					currentPath={this.props.currentPath}
 
 					itemClick={this.props.itemClick}
+					navigate={this.props.navigate}
+					
 					level={this.props.level}
 					data={x} />
 			);
