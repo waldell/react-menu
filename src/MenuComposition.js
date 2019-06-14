@@ -1,6 +1,7 @@
 import React from 'react';
 import MenuItem from './MenuItem';
 import Menu from './Menu';
+import Dimmer from './Dimmer';
 import PropTypes from 'prop-types';
 
 export default class MenuComposition extends React.Component {
@@ -8,6 +9,7 @@ export default class MenuComposition extends React.Component {
 		super(props);
 
 		this.state = {
+			open:false,
 			data: [],
 			selectedPath: [],
 			currentPath: []
@@ -51,29 +53,45 @@ export default class MenuComposition extends React.Component {
 		
 		this.setState({
 			selectedPath: trail
-		})
+		});
+
+		if (trail && trail.length > 0) {
+			this.menuOpen();
+		} else {
+			this.menuClose();
+		}
 	}
 
 	navigate(e) {
-		console.log(e);
+		console.log('naviogation occured!!!')
+		console.log(e)
 	}
 
 	menuClose() {
 		this.setState({
-			selectedPath: []
+			selectedPath: [],
+			open:false
 		})
+	}
+	menuOpen() {
+		this.setState({
+			open:true
+		});
 	}
 	render() {
 		return (
-			<Menu 
-				navigate={this.navigate}
-				close={this.menuClose}
-				className='top-menu'
-				itemClick={this.itemClick}
-				data={this.state.data}
-				selectedPath={this.state.selectedPath}
-				currentPath={this.state.currentPath}
-				level={1} />
+			<>
+				<Menu 
+					navigate={this.navigate}
+					close={this.menuClose}
+					className='top-menu'
+					itemClick={this.itemClick}
+					data={this.state.data}
+					selectedPath={this.state.selectedPath}
+					currentPath={this.state.currentPath}
+					level={1} />
+				<Dimmer open={this.state.open} />
+			</>
 		);
 	}
 
@@ -82,6 +100,7 @@ export default class MenuComposition extends React.Component {
 			.then(x => x.json())
 			.then(x => {
 				this.setState({
+					open:false,
 					data: x,
 					selectedPath: [],
 					currentPath: this.getTrail('2234', x)

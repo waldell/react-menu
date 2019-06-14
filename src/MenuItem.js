@@ -41,7 +41,7 @@ export default class MenuItem extends React.Component {
 	}
 
 	_setAlignment() {
-		const clickedItemCenterOffsetFromLeft = this.listItemRef.current.offsetLeft + (this.listItemRef.current.offsetWidth / 2);
+		const clickedItemCenterOffsetFromLeft = this.listItemRef.current.offsetLeft + (this.listItemRef.current.offsetWidth * 0.5);
 		const rightAlign = clickedItemCenterOffsetFromLeft > 560;
 		this.setState({
 			rightAlign: rightAlign
@@ -80,6 +80,7 @@ export default class MenuItem extends React.Component {
 		} else {
 			element = (
 				<Menu 
+					navigate={this.props.navigate}
 					itemClick={this.props.itemClick}
 					selectedPath={this.props.selectedPath}
 					currentPath={this.props.currentPath}
