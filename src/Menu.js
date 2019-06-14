@@ -4,11 +4,21 @@ import MenuItem from './MenuItem';
 export default class Menu extends React.Component {
 	constructor(props) {
 		super(props);
+		this.menuRef = React.createRef();
+		this._handleClickOutside = this._handleClickOutside.bind(this);
 	}
 
 	get className() {
-		var alignmentClass = this.props.align === 'right' ? 'menu--right' : 'menu--left';
-		return `${this.props.className} menu menu--level-${this.props.level} ${alignmentClass}`;
+		return `${this.props.className?this.props.className:''} menu menu--level-${this.props.level}`;
+	}
+
+	_handleClickOutside(e) {
+		e.stopImmediatePropagation();
+		const clickedItem = e.target;
+		const clickInMenu = this.menuRef.current.contains(clickedItem);
+		if (!clickInMenu) {
+			this.props.close();
+		}
 	}
 
 	renderMenuItems() {
@@ -30,8 +40,16 @@ export default class Menu extends React.Component {
 	render() {
 		return (
 			<ul 
+				ref={this.menuRef}
 				className={this.className} 
 				children={this.renderMenuItems()} />
 		);
+	}
+
+	componentWillMount() {
+		document.addEventListener('mousedown', this._handleClickOutside, false);
+	}
+	componentWillUnmount() {
+		document.addEventListener('mousedown', this._handleClickOutside, false);
 	}
 }

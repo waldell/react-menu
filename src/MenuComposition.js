@@ -14,6 +14,7 @@ export default class MenuComposition extends React.Component {
 		}
 
 		this.itemClick = this.itemClick.bind(this);
+		this.menuClose = this.menuClose.bind(this);
 	}
 
 	getTrail(url, data) {
@@ -41,10 +42,6 @@ export default class MenuComposition extends React.Component {
 	}
 
 	itemClick(e, dataItem) {
-		//console.log(dataItem);
-		//console.log();
-		//dataItem.self.props.data.text = 'loremzzzz'
-
 		let trail = this.getTrail(dataItem.url, this.state.data);
 
 		if (!dataItem.selected) {
@@ -56,9 +53,16 @@ export default class MenuComposition extends React.Component {
 			currentPath: this.getTrail('2234', this.state.data)
 		})
 	}
+	menuClose() {
+		console.log(this)
+		this.setState({
+			selectedPath: []
+		})
+	}
 	render() {
 		return (
 			<Menu 
+				close={this.menuClose}
 				className='top-menu'
 				itemClick={this.itemClick}
 				data={this.state.data}

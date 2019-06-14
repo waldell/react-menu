@@ -2,7 +2,17 @@ body {
 	background: #eee;
 }
 .dimmer {
-	
+
+}
+
+.top-menu {
+	position: relative;
+	max-width:1120px;
+	background: #fff
+}
+
+a {
+	color:inherit;
 }
 
 
@@ -185,14 +195,7 @@ $current-text-color: #000;
 	$itemWidth: 280px;
 	$firstItemHeight:40px;
 
-	a {
-		color:inherit;
-	}
-	.top-menu {
-		position: relative;
-		width:1200px;
-		background: #fff
-	}
+	
 
 	.menu {
 		padding-inline-start: 0px;

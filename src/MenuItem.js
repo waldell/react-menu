@@ -28,16 +28,23 @@ export default class MenuItem extends React.Component {
 
 	itemClick(e) {
 		e.preventDefault();
+		this._markCurrentSelectedItem(e);
+		this._setAlignment();
+	}
 
+	_setAlignment() {
+		const clickedItemCenterOffsetFromLeft = this.listItemRef.current.offsetLeft + (this.listItemRef.current.offsetWidth / 2);
+		const rightAlign = clickedItemCenterOffsetFromLeft > 560;
+		this.setState({
+			rightAlign: rightAlign
+		});
+	}
+
+	_markCurrentSelectedItem(e) {
+		// look for the current menuitem in the current selected path...
 		const currentSelectedItemIndex = this.props.selectedPath.indexOf(this.props.data.url);
-		const selected = currentSelectedItemIndex === -1 
-		
-		const clickedItemCenterOffsetFromLeft = this.listItemRef.current.offsetLeft + (this.listItemRef.current.offsetWidth/2);
-		if (clickedItemCenterOffsetFromLeft > 560) {
-			this.setState({
-				rightAlign: true
-			});
-		}
+		// ...if it exists in the array...
+		const selected = currentSelectedItemIndex === -1;
 
 		this.props.itemClick(e, {
 			url: this.props.data.url,
@@ -45,7 +52,7 @@ export default class MenuItem extends React.Component {
 		});
 	}
 
-	// TODO: refactor the menu_wrapper item stuff!!! Doesn't look good!
+	// TODO: refactor the menu_wrapper item stuff!!! Should be able to break this out and remove if from menu-item
 	renderSubMenu() {
 		let element = '';
 		if (this.props.level === 1) {
@@ -83,6 +90,7 @@ export default class MenuItem extends React.Component {
 				children={this.props.data.text} />
 		);
 	}
+
 	renderLink() {
 		return (
 			<a 
