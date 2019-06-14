@@ -1,3 +1,14 @@
+body {
+	background: #eee;
+}
+.dimmer {
+	
+}
+
+
+
+
+
 $level-1-background-color: #fff;
 $level-2-background-color: #fff;
 $level-3-background-color: #f5f5f5;
@@ -36,8 +47,8 @@ $current-text-color: #000;
 	font-size: 14px;
 
 	&:focus {
-		outline-style: solid;
-		outline-color: red;
+		//outline-style: solid;
+		//outline-color: red;
 	}
 }
 
@@ -63,11 +74,6 @@ $current-text-color: #000;
 		transform: rotate(-45deg);
 		transition: .2s;
 	}
-}
-
-
-body {
-	background: #eee;
 }
 
 // //mobile down
@@ -184,6 +190,8 @@ body {
 	}
 	.top-menu {
 		position: relative;
+		width:1200px;
+		background: #fff
 	}
 
 	.menu {
@@ -192,14 +200,19 @@ body {
 
 		.menu__menu-item {
 			display: none;
-
+			
 			& > .menu__wrapper-item {
 				display: none;
 				position: absolute;
 				left: 0;
-				top: $firstItemHeight;
+				top: $firstItemHeight + 10;
 				width: $itemWidth*2 !important;
 				flex-direction: row !important;
+
+				&.menu__wrapper-item--right {
+					left: auto!important;
+					right: 0;
+				}
 
 				& > .menu__commercial-area {
 					display: none;
@@ -214,6 +227,7 @@ body {
 					color: $selected-text-color !important;
 				}
 				& > button {
+					position: relative;
 					&:after {
 						top: 19px;
 						transform:rotate(-225deg);
@@ -260,6 +274,25 @@ body {
 			& > .menu__menu-item {
 				background: $level-1-background-color;
 				display:inline-block;
+
+				&.menu__menu-item--selected {
+					& > button {
+						&:before {
+							content: "";
+							display: block;
+							position: absolute;
+							bottom: -10px;
+							margin-left: -10px;
+							left: 50%;
+							width: 0;
+							height: 0;
+							border: 10px solid transparent;
+							border-bottom-color: #fff;
+							z-index: 10002;
+						}
+					}
+					
+				}
 			}
 		}
 		&.menu--level-2 {
@@ -338,6 +371,15 @@ body {
 		}
 	}
 
+	.menu--level-1 {
+		& > .menu__menu-item {
+			& > a ,
+			& > button {
+				@include menu-item-stuff;
+				text-transform: uppercase;
+			}
+		}
+	}
 	.menu--level-2,
 	.menu--level-3,
 	.menu--level-4 {

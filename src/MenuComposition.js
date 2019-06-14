@@ -3,34 +3,85 @@ import MenuItem from './MenuItem';
 import Menu from './Menu';
 import PropTypes from 'prop-types';
 
-export default function MenuComposition(props) {
+export default class MenuComposition extends React.Component {
+	constructor	(props) {
+		super(props);
 
-	function itemClick(e, obj) {
-		props.onNavigation(e, obj);
+		this.state = {
+			data: [],
+			selectedPath: [],
+			currentPath: []
+		}
+
+		this.itemClick = this.itemClick.bind(this);
 	}
 
-	function bind(children, level) {
-		return children.map(item => {
-			const isSelected = props.selectedPath.indexOf(item.url) > -1;
-			const isCurrent = props.currentPath.indexOf(item.url) > -1;
-			return (
-				<MenuItem text={item.text} url={item.url} itemClick={itemClick} selected={isSelected} current={isCurrent} key={item.url} level={level}>
-					{ item.children ? bind(item.children, level+1) : '' }
-				</MenuItem>
-			);
-		});
+	getTrail(url, data) {
+		var trail = [];
+		var index = 0;
+		function findObj(arr, idx) {
+			for (let current of arr) {
+				trail[idx] = current.url;
+				if (current.url === url) {
+					index = idx + 1;
+					return current;
+				} else {
+					if (current.children) {
+						var found = findObj(current.children, idx + 1);
+						if (found) {
+							return found;
+						}
+					}
+				}
+			}
+		}
+		findObj(data, index);
+		trail = trail.slice(0, index);
+		return trail;
 	}
 
-	return (
-		<Menu level={1} className="top-menu">
-			{props.data ? bind(props.data, 1) : ''}
-		</Menu>
-	);
+	itemClick(e, dataItem) {
+		//console.log(dataItem);
+		//console.log();
+		//dataItem.self.props.data.text = 'loremzzzz'
+
+		let trail = this.getTrail(dataItem.url, this.state.data);
+
+		if (!dataItem.selected) {
+			trail = trail.slice(0, trail.length-1);
+		}
+		
+		this.setState({
+			selectedPath: trail,
+			currentPath: this.getTrail('2234', this.state.data)
+		})
+	}
+	render() {
+		return (
+			<Menu 
+				className='top-menu'
+				itemClick={this.itemClick}
+				data={this.state.data}
+				selectedPath={this.state.selectedPath}
+				currentPath={this.state.currentPath}
+				level={1} />
+		);
+	}
+
+	componentDidMount() {
+		fetch('menu-data.json')
+			.then(x => x.json())
+			.then(x => {
+				this.setState({
+					data: x,
+					selectedPath: [],
+					currentPath: []
+				});
+			});
+		
+	}
 }
 
 MenuItem.propTypes = {
-	data: PropTypes.object,
-	onNavigation: PropTypes.func,
-	selectedPath: PropTypes.arrayOf(PropTypes.string),
-	currentPath: PropTypes.arrayOf(PropTypes.string)
+
 };

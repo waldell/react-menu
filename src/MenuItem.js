@@ -2,72 +2,112 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Menu from './Menu'
 
-export default function MenuItem(props) {
+export default class MenuItem extends React.Component {
 
-	function itemClick(e) {
+	constructor(props) {
+		super(props);
+		this.listItemRef = React.createRef();
+		this.state = {
+			rightAlign: false
+		};
+		this.itemClick = this.itemClick.bind(this);
+	}
+
+	get className() { 
+		var className = 'menu__menu-item';
+		if (this.props.selectedPath.indexOf(this.props.data.url) > -1) {
+			className += ' menu__menu-item--selected'
+		}
+		if (this.props.currentPath.indexOf(this.props.data.url) > -1) {
+			className += ' menu__menu-item--current'
+		}
+		
+		return className;
+	}
+	get hasChildren() { return this.props.data.children ? true : false }
+
+	itemClick(e) {
 		e.preventDefault();
-		props.itemClick(e, {
-			url: props.url, 
-			selected: !props.selected
+
+		const currentSelectedItemIndex = this.props.selectedPath.indexOf(this.props.data.url);
+		const selected = currentSelectedItemIndex === -1 
+		
+		const clickedItemCenterOffsetFromLeft = this.listItemRef.current.offsetLeft + (this.listItemRef.current.offsetWidth/2);
+		if (clickedItemCenterOffsetFromLeft > 560) {
+			this.setState({
+				rightAlign: true
+			});
+		}
+
+		this.props.itemClick(e, {
+			url: this.props.data.url,
+			selected: selected
 		});
 	}
-	function _withChildrenElement() {
-		let element;
-		if (props.level === 1) {
+
+	// TODO: refactor the menu_wrapper item stuff!!! Doesn't look good!
+	renderSubMenu() {
+		let element = '';
+		if (this.props.level === 1) {
 			element = (
-				<div className="menu__wrapper-item">
-					<Menu level={props.level+1}>
-						{props.children}
-					</Menu>
-					{ props.level === 1 ? 
-						<div className="menu__commercial-area">Hello worldzzzzzz</div> : 
-						''
-					}
+				<div className={`menu__wrapper-item ${this.state.rightAlign ? 'menu__wrapper-item--right' : ''}`}>
+					<Menu 
+						itemClick={this.props.itemClick}
+						selectedPath={this.props.selectedPath}
+						currentPath={this.props.currentPath}
+						data={this.props.data.children}
+						level={this.props.level+1} />
+
+					<div className="menu__commercial-area" dangerouslySetInnerHTML={{__html: 'this.props.commercial'}}></div>
 				</div>
-			)
+			);
 		} else {
 			element = (
-				<Menu level={props.level+1}>
-					{props.children}
-				</Menu>
+				<Menu 
+					itemClick={this.props.itemClick}
+					selectedPath={this.props.selectedPath}
+					currentPath={this.props.currentPath}
+					data={this.props.data.children}
+					level={this.props.level+1} />
 			);
 		}
+		
+
+		return this.hasChildren ? element : '';
+	}
+	
+	renderButton() {
 		return (
-			<>
-				<button 
-					href={props.url} 
-					onClick={itemClick}
-					aria-haspopup={true}
-					>
-						{props.text}
-					</button>
-				{element}
-			</>
+			<button 
+				onClick={this.itemClick} 
+				children={this.props.data.text} />
 		);
 	}
-	function _withoutChildrenElement() {
+	renderLink() {
 		return (
-			<a href={props.url} onClick={itemClick}>{props.text}</a>
+			<a 
+				onClick={this.itemClick} 
+				href={this.props.data.url}
+				children={this.props.data.text} />
 		);
 	}
-	return (
-		<li 
-			className={`menu__menu-item ${props.selected ? 'menu__menu-item--selected' : ''} ${props.current ? 'menu__menu-item--current' : ''}`}
-			aria-expanded={props.selected}
-			aria-current={props.current}
-			>
-			{ props.children ? _withChildrenElement() : _withoutChildrenElement() }
-		</li>
-	);
+
+	render() {
+		return(
+			<li 
+				ref={this.listItemRef}
+				className={this.className}>
+
+				{ this.hasChildren ? this.renderButton() : this.renderLink() }
+				{ this.renderSubMenu() }
+			</li>
+		);
+	}
+
+	componentDidMount() {
+	}
+
+	
 }
 
-MenuItem.propTypes = {
-	text: PropTypes.string,
-	url: PropTypes.string,
-	itemClick: PropTypes.func,
 
-	selected: PropTypes.bool,
-	current: PropTypes.bool,
-
-	level: PropTypes.number
-};
