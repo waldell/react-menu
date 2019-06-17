@@ -6,10 +6,19 @@ export default class Menu extends React.Component {
 		super(props);
 		this.menuRef = React.createRef();
 		this._handleClickOutside = this._handleClickOutside.bind(this);
+
+		this.onNavigate = this.onNavigate.bind(this);
 	}
 
 	get className() {
 		return `${this.props.className?this.props.className:''} menu menu--level-${this.props.level}`;
+	}
+
+	onNavigate(dataItem) {
+		if (this.props.navigate) {
+			this.props.navigate(dataItem);
+		}
+		
 	}
 
 	_handleClickOutside(e) {
@@ -31,7 +40,7 @@ export default class Menu extends React.Component {
 					currentPath={this.props.currentPath}
 
 					itemClick={this.props.itemClick}
-					navigate={this.props.navigate}
+					navigate={this.onNavigate}
 					
 					level={this.props.level}
 					data={x} />

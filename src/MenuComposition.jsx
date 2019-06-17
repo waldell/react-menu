@@ -63,8 +63,9 @@ export default class MenuComposition extends React.Component {
 	}
 
 	navigate(e) {
-		console.log('naviogation occured!!!')
-		console.log(e)
+		if (this.props.onNavigation) {
+			this.props.onNavigation(e);
+		}
 	}
 
 	menuClose() {
@@ -109,7 +110,3 @@ export default class MenuComposition extends React.Component {
 		
 	}
 }
-
-MenuItem.propTypes = {
-
-};

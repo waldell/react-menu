@@ -29,7 +29,7 @@ export default class MenuItem extends React.Component {
 
 	linkClick(e) {
 		if (this.props.navigate) {
-			this.props.navigate(e);
+			this.props.navigate(this.props.data);
 		}
 		
 		this.itemClick(e);
